@@ -5,19 +5,19 @@ import java.util.Scanner;
 
 /**
  * Created by dmitry tkachenko on 2/3/17.
- * <p>
+ *
  * Крестики-нолики в процедурном стиле
- * <p>
+ *
  * 1. Полностью разобраться с кодом, попробовать переписать с нуля, стараясь
  * не подглядывать в методичку;
- * <p>
+ *
  * 2. Переделать проверку победы, чтобы она не была реализована просто набором условий,
  * например, с использованием циклов.
- * <p>
+ *
  * 3. Попробовать переписать логику проверки победы, чтобы она работала для поля 5х5 и
  * количества фишек 4. Очень желательно не делать это просто набором условий для каждой из
  * возможных ситуаций;
- * <p>
+ *
  * 4. Доработать искусственный интеллект, чтобы он мог блокировать ходы игрока.
  */
 public class Dz4 {
@@ -32,14 +32,21 @@ public class Dz4 {
     private static Random random = new Random();
     private static boolean trigger = true;
     private static int actionCounter = 0;
+    private static char currentDot;
 
     public static void main(String[] args) {
         fillMap();
         printMap();
 
         while (checkGameLoop()) {
-            if (trigger) humanPlayer();
-            else aiPlayer();
+            if (trigger) {
+                currentDot = DOT_X;
+//                humanPlayer();
+                aiPlayer();
+            } else {
+                currentDot = DOT_O;
+                aiPlayer();
+            }
 
             trigger = !trigger;
             printMap();
@@ -106,7 +113,7 @@ public class Dz4 {
             x = input[1];
         } while (!checkAction(y, x));
 
-        tiles[y][x] = DOT_X;
+        tiles[y][x] = currentDot;
     }
 
     private static void aiPlayer() {
@@ -122,7 +129,7 @@ public class Dz4 {
 
         System.out.printf("y: %d x: %d\n", y + 1, x + 1);
 
-        tiles[y][x] = DOT_O;
+        tiles[y][x] = currentDot;
     }
 
     private static boolean checkAction(int y, int x) {
@@ -132,12 +139,36 @@ public class Dz4 {
         return false;
     }
 
-    private static boolean isTileFree(int y, int x) {
-        return false;
+    private static boolean isContinue() {
+        char dot = currentDot;
+
+//        equals("OOO")
+//        equals("XXX")
+        if (dot == tiles[0][0] && dot == tiles[0][1] && dot == tiles[0][2]) return false;
+        if (dot == tiles[1][0] && dot == tiles[1][1] && dot == tiles[1][2]) return false;
+        if (dot == tiles[2][0] && dot == tiles[2][1] && dot == tiles[2][2]) return false;
+
+        if (dot == tiles[0][0] && dot == tiles[1][0] && dot == tiles[2][0]) return false;
+        if (dot == tiles[0][1] && dot == tiles[1][1] && dot == tiles[2][1]) return false;
+        if (dot == tiles[0][2] && dot == tiles[1][2] && dot == tiles[2][2]) return false;
+
+        if (dot == tiles[0][0] && dot == tiles[1][1] && dot == tiles[2][2]) return false;
+        if (dot == tiles[0][2] && dot == tiles[1][1] && dot == tiles[2][0]) return false;
+
+        /*for (int i = 0; i < SIZE; i++) {
+            int humanActions = 0;
+            int aiActions = 0;
+            for (int j = 0; j < SIZE; j++) {
+
+            }
+        }*/
+
+        return true;
     }
 
     private static boolean checkGameLoop() {
         if (actionCounter == ACTION_SUM) return false;
+        if (!isContinue()) return false;
         return true;
     }
 }
