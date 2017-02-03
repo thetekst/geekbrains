@@ -142,28 +142,34 @@ public class Dz4 {
     private static boolean isContinue() {
         char dot = currentDot;
 
-//        equals("OOO")
-//        equals("XXX")
-        if (dot == tiles[0][0] && dot == tiles[0][1] && dot == tiles[0][2]) return false;
-        if (dot == tiles[1][0] && dot == tiles[1][1] && dot == tiles[1][2]) return false;
-        if (dot == tiles[2][0] && dot == tiles[2][1] && dot == tiles[2][2]) return false;
-
-        if (dot == tiles[0][0] && dot == tiles[1][0] && dot == tiles[2][0]) return false;
-        if (dot == tiles[0][1] && dot == tiles[1][1] && dot == tiles[2][1]) return false;
-        if (dot == tiles[0][2] && dot == tiles[1][2] && dot == tiles[2][2]) return false;
-
         if (dot == tiles[0][0] && dot == tiles[1][1] && dot == tiles[2][2]) return false;
         if (dot == tiles[0][2] && dot == tiles[1][1] && dot == tiles[2][0]) return false;
 
-        /*for (int i = 0; i < SIZE; i++) {
-            int humanActions = 0;
-            int aiActions = 0;
-            for (int j = 0; j < SIZE; j++) {
-
-            }
-        }*/
+        if (findHorAndVerMatches(dot)) return false;
 
         return true;
+    }
+
+    private static boolean findHorAndVerMatches(char dot) {
+        String line = "";
+
+        for (int i = 0; i < DOTS_TO_WIN; i++) {
+            line += dot;
+        }
+
+        for (int i = 0; i < SIZE; i++) {
+            String horizontal = "";
+            String vertical = "";
+
+            for (int j = 0; j < SIZE; j++) {
+                horizontal += tiles[i][j];
+                vertical += tiles[j][i];
+            }
+
+            if (horizontal.equals(line) || vertical.equals(line)) return true;
+        }
+
+        return false;
     }
 
     private static boolean checkGameLoop() {
