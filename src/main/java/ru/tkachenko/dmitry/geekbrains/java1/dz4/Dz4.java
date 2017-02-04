@@ -22,9 +22,9 @@ import java.util.Scanner;
  */
 public class Dz4 {
     private static char[][] tiles;
-    private static final int SIZE = 3;
+    private static final int SIZE = 5;
     private static final int ACTION_SUM = SIZE * SIZE;
-    private static final int DOTS_TO_WIN = 3;
+    private static final int DOTS_TO_WIN = 4;
     private static final char DOT_EMPTY = '_';
     private static final char DOT_X = 'X';
     private static final char DOT_O = 'O';
@@ -51,7 +51,6 @@ public class Dz4 {
             trigger = !trigger;
             printMap();
             actionCounter++;
-            System.out.println("actionSum: " + actionCounter);
         }
     }
 
@@ -133,43 +132,63 @@ public class Dz4 {
     }
 
     private static boolean checkAction(int y, int x) {
-        if (x < 0 && y < 0 && x >= SIZE & y >= SIZE) return false;
+        if (x < 0 || y < 0 || x >= SIZE || y >= SIZE) return false;
         if (DOT_EMPTY == tiles[y][x]) return true;
-//        if (isTileFree(y, x)) return true;
         return false;
     }
 
     private static boolean isContinue() {
-        char dot = currentDot;
-
-        if (dot == tiles[0][0] && dot == tiles[1][1] && dot == tiles[2][2]) return false;
-        if (dot == tiles[0][2] && dot == tiles[1][1] && dot == tiles[2][0]) return false;
-
-        if (findHorAndVerMatches(dot)) return false;
-
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                if (findRightUp(i, j)) return false;
+                if (findRight(i, j)) return false;
+                if (findRightDown(i, j)) return false;
+                if (findDown(i, j)) return false;
+            }
+        }
         return true;
     }
 
-    private static boolean findHorAndVerMatches(char dot) {
-        String line = "";
+    private static boolean findRightUp(int y, int x) {
+        for (int j = 0; j < DOTS_TO_WIN; j++) {
 
-        for (int i = 0; i < DOTS_TO_WIN; i++) {
-            line += dot;
+            if (y < 0 || y >= SIZE || x < 0 || x >= SIZE || currentDot != tiles[y][x]) return false;
+
+            y--;
+            x++;
         }
+        return true;
+    }
 
-        for (int i = 0; i < SIZE; i++) {
-            String horizontal = "";
-            String vertical = "";
+    private static boolean findRight(int y, int x) {
+        for (int j = 0; j < DOTS_TO_WIN; j++) {
 
-            for (int j = 0; j < SIZE; j++) {
-                horizontal += tiles[i][j];
-                vertical += tiles[j][i];
-            }
+            if (y < 0 || y >= SIZE || x < 0 || x >= SIZE || currentDot != tiles[y][x]) return false;
 
-            if (horizontal.equals(line) || vertical.equals(line)) return true;
+            x++;
         }
+        return true;
+    }
 
-        return false;
+    private static boolean findRightDown(int y, int x) {
+        for (int j = 0; j < DOTS_TO_WIN; j++) {
+
+            if (y < 0 || y >= SIZE || x < 0 || x >= SIZE || currentDot != tiles[y][x]) return false;
+
+            y++;
+            x++;
+        }
+        return true;
+    }
+
+    private static boolean findDown(int y, int x) {
+        for (int j = 0; j < DOTS_TO_WIN; j++) {
+
+            if (y < 0 || y >= SIZE || x < 0 || x >= SIZE || currentDot != tiles[y][x]) return false;
+
+            y--;
+        }
+        return true;
     }
 
     private static boolean checkGameLoop() {
