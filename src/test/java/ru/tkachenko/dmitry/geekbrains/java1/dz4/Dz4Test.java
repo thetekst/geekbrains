@@ -11,6 +11,8 @@ public class Dz4Test {
     private static char DOT_EMPTY = '_';
     private static final char DOT_X = 'X';
     private static final char DOT_O = 'O';
+    private static char currentDot = DOT_O;
+    private static char enemyDOt = DOT_X;
 
     public static void main(String[] args) {
         boolean result;
@@ -23,16 +25,49 @@ public class Dz4Test {
         tiles[2][0] = DOT_O;
         tiles[2][2] = DOT_O;*/
 
-        tiles = new char[][]{
+        /*tiles = new char[][]{
                 {'X', 'O', 'X'},
                 {'O', 'X', 'O'},
                 {'X', 'X', 'X'}
+        };*/
+
+
+        // -----
+
+        /*tiles = new char[][]{
+                {'_', '_', '_'},
+                {'_', 'X', 'O'},
+                {'X', '_', '_'}
         };
+
+        tiles = new char[][]{
+                {'_', '_', 'X'},
+                {'_', '_', 'O'},
+                {'X', '_', '_'}
+        };
+
+        tiles = new char[][]{
+                {'X', 'X', '_'},
+                {'_', '_', 'O'},
+                {'_', '_', '_'}
+        };
+
+        tiles = new char[][]{
+                {'X', '_', '_'},
+                {'_', '_', 'O'},
+                {'X', '_', '_'}
+        };
+
+        tiles = new char[][]{
+                {'X', '_', '_'},
+                {'_', '_', 'O'},
+                {'_', '_', 'X'}
+        };*/
 
         printMap();
         int y = 1;
         int x = 1;
-        char currentDot = DOT_O;
+
 
         long start = System.currentTimeMillis();
 
@@ -43,60 +78,41 @@ public class Dz4Test {
             for (int j = 0; j < SIZE; j++) {
 
                 System.out.printf("\n%d %d\n", i, j);
-                result = findRightUp(i, j, currentDot);
+
+                result = setRightUp(i, j);
                 System.out.println(result);
 
-                result = findRight(i, j, currentDot);
+                result = setRight(i, j);
                 System.out.println(result);
 
-                result = findRightDown(i, j, currentDot);
+                result = setRightDown(i, j);
                 System.out.println(result);
 
-                result = findDown(i, j, currentDot);
+                result = setDown(i, j);
                 System.out.println(result);
+
+                /*result = findRightUp(i, j);
+                System.out.println(result);
+
+                result = findRight(i, j);
+                System.out.println(result);
+
+                result = findRightDown(i, j);
+                System.out.println(result);
+
+                result = findDown(i, j);
+                System.out.println(result);*/
 
             }
-
         }
+        printMap();
         long finish = System.currentTimeMillis();
         long timeConsumedMillis = finish - start;
-        System.out.println(timeConsumedMillis);
+//        System.out.println(timeConsumedMillis);
 
     }
 
-    private static boolean isContinue(char currentDot) {
-        char dot = currentDot;
-
-        if (dot == tiles[0][0] && dot == tiles[1][1] && dot == tiles[2][2]) return false;
-        if (dot == tiles[0][2] && dot == tiles[1][1] && dot == tiles[2][0]) return false;
-
-        if (findHorAndVerMatches(dot)) return false;
-        return true;
-    }
-
-    private static boolean findHorAndVerMatches(char dot) {
-        String line = "";
-
-        for (int i = 0; i < DOTS_TO_WIN; i++) {
-            line += dot;
-        }
-
-        for (int i = 0; i < SIZE; i++) {
-            String horizontal = "";
-            String vertical = "";
-
-            for (int j = 0; j < SIZE; j++) {
-                horizontal += tiles[i][j];
-                vertical += tiles[j][i];
-            }
-
-            if (horizontal.equals(line) || vertical.equals(line)) return true;
-        }
-
-        return false;
-    }
-
-    private static boolean findRightUp(int y, int x, char currentDot) {
+    private static boolean findRightUp(int y, int x) {
         for (int j = 0; j < DOTS_TO_WIN; j++) {
 
             if (y < 0 || y >= SIZE || x < 0 || x >= SIZE || currentDot != tiles[y][x]) return false;
@@ -108,7 +124,7 @@ public class Dz4Test {
         return true;
     }
 
-    private static boolean findRight(int y, int x, char currentDot) {
+    private static boolean findRight(int y, int x) {
         for (int j = 0; j < DOTS_TO_WIN; j++) {
 
             if (y < 0 || y >= SIZE || x < 0 || x >= SIZE || currentDot != tiles[y][x]) return false;
@@ -118,7 +134,7 @@ public class Dz4Test {
         return true;
     }
 
-    private static boolean findRightDown(int y, int x, char currentDot) {
+    private static boolean findRightDown(int y, int x) {
         for (int j = 0; j < DOTS_TO_WIN; j++) {
 
             if (y < 0 || y >= SIZE || x < 0 || x >= SIZE || currentDot != tiles[y][x]) return false;
@@ -129,7 +145,7 @@ public class Dz4Test {
         return true;
     }
 
-    private static boolean findDown(int y, int x, char currentDot) {
+    private static boolean findDown(int y, int x) {
         for (int j = 0; j < DOTS_TO_WIN; j++) {
 
             if (y < 0 || y >= SIZE || x < 0 || x >= SIZE || currentDot != tiles[y][x]) return false;
@@ -168,5 +184,147 @@ public class Dz4Test {
         System.out.println();
     }
 
+    private static void aiPlayer() {
 
+        switch (DOTS_TO_WIN) {
+            case 1:
+            case 2:
+            case 3:
+                if (!isSet()) {
+                    System.out.println("вызываем рандомайзер");
+                }
+                break;
+        }
+    }
+
+    private static boolean isSet() {
+        System.out.println("AI");
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                if (setRightUp(i, j)) return true;
+                if (setRight(i, j)) return true;
+                if (setRightDown(i, j)) return true;
+                if (setDown(i, j)) return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean setRightUp(int y, int x) {
+        int lastEmptyY = -1;
+        int lastEmptyX = -1;
+        int enemyCount = 0;
+        int emptyCount = 0;
+
+        for (int j = 0; j < DOTS_TO_WIN; j++) {
+
+            if (y < 0 || y >= SIZE || x < 0 || x >= SIZE) return false;
+            if (DOT_EMPTY == tiles[y][x]) {
+                lastEmptyY = y;
+                lastEmptyX = x;
+                emptyCount++;
+            }
+            if (enemyDOt == tiles[y][x]) enemyCount++;
+            if (DOT_EMPTY == tiles[y][x]) emptyCount++;
+
+            y--;
+            x++;
+        }
+
+        if (lastEmptyY < 0 || lastEmptyX < 0 || lastEmptyY >= SIZE || lastEmptyX >= SIZE) {
+            System.out.println("error");
+            return false;
+        }
+
+        if (emptyCount > 0 && enemyCount >= SIZE - 1 && enemyCount > 0) tiles[lastEmptyY][lastEmptyX] = currentDot;
+        return true;
+    }
+
+    private static boolean setRight(int y, int x) {
+        int lastEmptyY = -1;
+        int lastEmptyX = -1;
+        int enemyCount = 0;
+        int emptyCount = 0;
+
+        for (int j = 0; j < DOTS_TO_WIN; j++) {
+
+            if (y < 0 || y >= SIZE || x < 0 || x >= SIZE) return false;
+            if (DOT_EMPTY == tiles[y][x]) {
+                lastEmptyY = y;
+                lastEmptyX = x;
+                emptyCount++;
+            }
+            if (enemyDOt == tiles[y][x]) enemyCount++;
+            if (DOT_EMPTY == tiles[y][x]) emptyCount++;
+
+            x++;
+        }
+
+        if (lastEmptyY < 0 || lastEmptyX < 0 || lastEmptyY >= SIZE || lastEmptyX >= SIZE) {
+            System.out.println("error");
+            return false;
+        }
+
+        if (emptyCount > 0 && enemyCount >= SIZE - 1 && enemyCount > 0) tiles[lastEmptyY][lastEmptyX] = currentDot;
+        return true;
+    }
+
+    private static boolean setRightDown(int y, int x) {
+        int lastEmptyY = -1;
+        int lastEmptyX = -1;
+        int enemyCount = 0;
+        int emptyCount = 0;
+
+        for (int j = 0; j < DOTS_TO_WIN; j++) {
+
+            if (y < 0 || y >= SIZE || x < 0 || x >= SIZE) return false;
+            if (DOT_EMPTY == tiles[y][x]) {
+                lastEmptyY = y;
+                lastEmptyX = x;
+                emptyCount++;
+            }
+            if (enemyDOt == tiles[y][x]) enemyCount++;
+            if (DOT_EMPTY == tiles[y][x]) emptyCount++;
+
+            y++;
+            x++;
+        }
+
+        if (lastEmptyY < 0 || lastEmptyX < 0 || lastEmptyY >= SIZE || lastEmptyX >= SIZE) {
+            System.out.println("error");
+            return false;
+        }
+
+        if (emptyCount > 0 && enemyCount >= SIZE - 1 && enemyCount > 0) tiles[lastEmptyY][lastEmptyX] = currentDot;
+        return true;
+    }
+
+    private static boolean setDown(int y, int x) {
+        int lastEmptyY = -1;
+        int lastEmptyX = -1;
+        int enemyCount = 0;
+        int emptyCount = 0;
+
+        for (int j = 0; j < DOTS_TO_WIN; j++) {
+
+            if (y < 0 || y >= SIZE || x < 0 || x >= SIZE) return false;
+            if (DOT_EMPTY == tiles[y][x]) {
+                lastEmptyY = y;
+                lastEmptyX = x;
+                emptyCount++;
+            }
+            if (enemyDOt == tiles[y][x]) enemyCount++;
+            if (DOT_EMPTY == tiles[y][x]) emptyCount++;
+
+            y++;
+        }
+
+        if (lastEmptyY < 0 || lastEmptyX < 0 || lastEmptyY >= SIZE || lastEmptyX >= SIZE) {
+            System.out.println("error");
+            return false;
+        }
+
+        if (emptyCount > 0 && enemyCount >= SIZE - 1 && enemyCount > 0) tiles[lastEmptyY][lastEmptyX] = currentDot;
+        return true;
+    }
 }

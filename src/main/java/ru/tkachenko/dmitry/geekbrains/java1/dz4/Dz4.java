@@ -22,9 +22,9 @@ import java.util.Scanner;
  */
 public class Dz4 {
     private static char[][] tiles;
-    private static final int SIZE = 5;
+    private static final int SIZE = 3;
     private static final int ACTION_SUM = SIZE * SIZE;
-    private static final int DOTS_TO_WIN = 4;
+    private static final int DOTS_TO_WIN = SIZE;
     private static final char DOT_EMPTY = '_';
     private static final char DOT_X = 'X';
     private static final char DOT_O = 'O';
@@ -41,11 +41,13 @@ public class Dz4 {
         while (checkGameLoop()) {
             if (trigger) {
                 currentDot = DOT_X;
-//                humanPlayer();
-                aiPlayer();
+//                humanPlayer(); // метод для человека
+//                stupidPcPlayer(); // для pc vs. pc
+                aiPlayer(); // метод не смог реализовать
             } else {
                 currentDot = DOT_O;
-                aiPlayer();
+//                stupidPcPlayer(); // pc
+                aiPlayer(); // метод не смог реализовать
             }
 
             trigger = !trigger;
@@ -105,8 +107,7 @@ public class Dz4 {
         int x;
 
         do {
-            System.out.println("Ходит человек");
-            System.out.println("Введите Y X");
+            System.out.printf("Ходит человек [%c]. Введите Y X: ", currentDot);
             int[] input = humanInput();
             y = input[0];
             x = input[1];
@@ -115,18 +116,18 @@ public class Dz4 {
         tiles[y][x] = currentDot;
     }
 
-    private static void aiPlayer() {
+    private static void stupidPcPlayer() {
         int y;
         int x;
 
-        System.out.println("Ходит AI");
+        System.out.printf("Ходит AI [%c]", currentDot);
 
         do {
             y = random.nextInt(SIZE);
             x = random.nextInt(SIZE);
         } while (!checkAction(y, x));
 
-        System.out.printf("y: %d x: %d\n", y + 1, x + 1);
+        System.out.printf(" (y: %d, x: %d)\n", y + 1, x + 1);
 
         tiles[y][x] = currentDot;
     }
@@ -186,7 +187,7 @@ public class Dz4 {
 
             if (y < 0 || y >= SIZE || x < 0 || x >= SIZE || currentDot != tiles[y][x]) return false;
 
-            y--;
+            y++;
         }
         return true;
     }
@@ -194,6 +195,159 @@ public class Dz4 {
     private static boolean checkGameLoop() {
         if (actionCounter == ACTION_SUM) return false;
         if (!isContinue()) return false;
+        return true;
+    }
+
+    // Все ниже методы созданы для написания AI метода
+
+    private static void aiPlayer() {
+
+        switch (DOTS_TO_WIN) {
+            case 1:
+            case 2:
+            case 3:
+                if (!isSet()) {
+                    stupidPcPlayer();
+                }
+                break;
+            default:
+                stupidPcPlayer();
+                break;
+        }
+    }
+
+    private static boolean isSet() {
+        System.out.println("AI");
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                if (setRightUp(i, j)) return true;
+                if (setRight(i, j)) return true;
+                if (setRightDown(i, j)) return true;
+                if (setDown(i, j)) return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean setRightUp(int y, int x) {
+        int lastEmptyY = -1;
+        int lastEmptyX = -1;
+        int enemyCount = 0;
+        int emptyCount = 0;
+        char enemyDot = trigger ? DOT_O : DOT_X;
+
+        for (int j = 0; j < DOTS_TO_WIN; j++) {
+
+            if (y < 0 || y >= SIZE || x < 0 || x >= SIZE) return false;
+            if (DOT_EMPTY == tiles[y][x]) {
+                lastEmptyY = y;
+                lastEmptyX = x;
+                emptyCount++;
+            }
+            if (enemyDot == tiles[y][x]) enemyCount++;
+            if (DOT_EMPTY == tiles[y][x]) emptyCount++;
+
+            y--;
+            x++;
+        }
+
+        if (lastEmptyY < 0 || lastEmptyX < 0 || lastEmptyY >= SIZE || lastEmptyX >= SIZE) {
+            System.out.println("error");
+            return false;
+        }
+
+        if (emptyCount > 0 && enemyCount >= SIZE - 1 && enemyCount > 0) tiles[lastEmptyY][lastEmptyX] = currentDot;
+        return true;
+    }
+
+    private static boolean setRight(int y, int x) {
+        int lastEmptyY = -1;
+        int lastEmptyX = -1;
+        int enemyCount = 0;
+        int emptyCount = 0;
+        char enemyDot = trigger ? DOT_O : DOT_X;
+
+        for (int j = 0; j < DOTS_TO_WIN; j++) {
+
+            if (y < 0 || y >= SIZE || x < 0 || x >= SIZE) return false;
+            if (DOT_EMPTY == tiles[y][x]) {
+                lastEmptyY = y;
+                lastEmptyX = x;
+                emptyCount++;
+            }
+            if (enemyDot == tiles[y][x]) enemyCount++;
+            if (DOT_EMPTY == tiles[y][x]) emptyCount++;
+
+            x++;
+        }
+
+        if (lastEmptyY < 0 || lastEmptyX < 0 || lastEmptyY >= SIZE || lastEmptyX >= SIZE) {
+            System.out.println("error");
+            return false;
+        }
+
+        if (emptyCount > 0 && enemyCount >= SIZE - 1 && enemyCount > 0) tiles[lastEmptyY][lastEmptyX] = currentDot;
+        return true;
+    }
+
+    private static boolean setRightDown(int y, int x) {
+        int lastEmptyY = -1;
+        int lastEmptyX = -1;
+        int enemyCount = 0;
+        int emptyCount = 0;
+        char enemyDot = trigger ? DOT_O : DOT_X;
+
+        for (int j = 0; j < DOTS_TO_WIN; j++) {
+
+            if (y < 0 || y >= SIZE || x < 0 || x >= SIZE) return false;
+            if (DOT_EMPTY == tiles[y][x]) {
+                lastEmptyY = y;
+                lastEmptyX = x;
+                emptyCount++;
+            }
+            if (enemyDot == tiles[y][x]) enemyCount++;
+            if (DOT_EMPTY == tiles[y][x]) emptyCount++;
+
+            y++;
+            x++;
+        }
+
+        if (lastEmptyY < 0 || lastEmptyX < 0 || lastEmptyY >= SIZE || lastEmptyX >= SIZE) {
+            System.out.println("error");
+            return false;
+        }
+
+        if (emptyCount > 0 && enemyCount >= SIZE - 1 && enemyCount > 0) tiles[lastEmptyY][lastEmptyX] = currentDot;
+        return true;
+    }
+
+    private static boolean setDown(int y, int x) {
+        int lastEmptyY = -1;
+        int lastEmptyX = -1;
+        int enemyCount = 0;
+        int emptyCount = 0;
+        char enemyDot = trigger ? DOT_O : DOT_X;
+
+        for (int j = 0; j < DOTS_TO_WIN; j++) {
+
+            if (y < 0 || y >= SIZE || x < 0 || x >= SIZE) return false;
+            if (DOT_EMPTY == tiles[y][x]) {
+                lastEmptyY = y;
+                lastEmptyX = x;
+                emptyCount++;
+            }
+            if (enemyDot == tiles[y][x]) enemyCount++;
+            if (DOT_EMPTY == tiles[y][x]) emptyCount++;
+
+            y++;
+        }
+
+        if (lastEmptyY < 0 || lastEmptyX < 0 || lastEmptyY >= SIZE || lastEmptyX >= SIZE) {
+            System.out.println("error");
+            return false;
+        }
+
+        if (emptyCount > 0 && enemyCount >= SIZE - 1 && enemyCount > 0) tiles[lastEmptyY][lastEmptyX] = currentDot;
         return true;
     }
 }
