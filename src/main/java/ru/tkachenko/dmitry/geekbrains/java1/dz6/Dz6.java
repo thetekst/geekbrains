@@ -6,7 +6,7 @@ import ru.tkachenko.dmitry.geekbrains.java1.dz6.dogs.DogSmall;
 
 /**
  * Created by dmitry tkachenko on 2/10/17.
- * <p>
+ *
  * 1. Создать классы Собака и Кот с наследованием от класса Животное.
  * 2 Животные могут выполнять действия: бежать, плыть, перепрыгивать препятствие. В качестве
  * параметра каждому методу передается величина, означающая или длину препятствия (для
@@ -35,5 +35,16 @@ public class Dz6 {
         System.out.printf("%s swim: %s\n", cat.getClass().getSimpleName(), cat.swim(201));
         System.out.printf("%s swim: %s\n", dogSmall.getClass().getSimpleName(), dogSmall.swim(3));
         System.out.printf("%s swim: %s\n\n", dogBig.getClass().getSimpleName(), dogBig.swim(10));
+
+        assert !cat.run(201);
+        assert cat.run(200);
+
+        assert !dogSmall.run(0);
+        assert !dogSmall.run(351);
+        assert dogSmall.run(350);
+
+        assert dogBig.run(351) == true;
+        assert dogBig.run(560) == true;
+        assert dogBig.run(561) == false;
     }
 }
