@@ -25,28 +25,25 @@ import ru.tkachenko.dmitry.geekbrains.java1.dz6.dogs.DogSmall;
  */
 public class Dz6 {
     public static void main(String[] args) {
+        Animal[] animals = {new Cat(), new DogSmall(), new DogBig(), new DogRandom()};
+
+        for (Animal animal : animals) {
+            System.out.printf("%s run: %s\n",
+                    animal.getClass().getSimpleName(),
+                    animal.run(201));
+
+            System.out.printf("%s jump: %s\n",
+                    animal.getClass().getSimpleName(),
+                    animal.jump(0.5));
+
+            System.out.printf("%s swim: %s\n\n",
+                    animal.getClass().getSimpleName(),
+                    animal.swim(8));
+        }
+
         Animal cat = new Cat();
         Animal dogSmall = new DogSmall();
         Animal dogBig = new DogBig();
-        Animal dogRandom = new DogRandom();
-
-        System.out.printf("%s run: %s\n", cat.getClass().getSimpleName(), cat.run(201));
-        System.out.printf("%s run: %s\n", dogSmall.getClass().getSimpleName(), dogSmall.run(400));
-        System.out.printf("%s run: %s\n", dogBig.getClass().getSimpleName(), dogBig.run(500));
-        System.out.printf("%s run: %s\n\n", dogRandom.getClass().getSimpleName(),
-                dogRandom.run(300));
-
-        System.out.printf("%s jump: %s\n", cat.getClass().getSimpleName(), cat.jump(1));
-        System.out.printf("%s jump: %s\n", dogSmall.getClass().getSimpleName(), dogSmall.jump(0.5));
-        System.out.printf("%s jump: %s\n", dogBig.getClass().getSimpleName(), dogBig.jump(0.5));
-        System.out.printf("%s jump: %s\n\n", dogRandom.getClass().getSimpleName(),
-                dogRandom.jump(300));
-
-        System.out.printf("%s swim: %s\n", cat.getClass().getSimpleName(), cat.swim(201));
-        System.out.printf("%s swim: %s\n", dogSmall.getClass().getSimpleName(), dogSmall.swim(3));
-        System.out.printf("%s swim: %s\n", dogBig.getClass().getSimpleName(), dogBig.swim(10));
-        System.out.printf("%s swim: %s\n\n", dogRandom.getClass().getSimpleName(),
-                dogRandom.swim(7));
 
         assert !cat.run(201);
         assert cat.run(200);
