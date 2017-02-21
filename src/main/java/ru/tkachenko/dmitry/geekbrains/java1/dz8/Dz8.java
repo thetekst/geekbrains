@@ -1,6 +1,7 @@
 package ru.tkachenko.dmitry.geekbrains.java1.dz8;
 
-import ru.tkachenko.dmitry.geekbrains.java1.dz8.gui.frame.Window;
+import ru.tkachenko.dmitry.geekbrains.java1.dz8.gui.frame.Field;
+import ru.tkachenko.dmitry.geekbrains.java1.dz8.logic.Game;
 
 import javax.swing.*;
 
@@ -11,6 +12,6 @@ import javax.swing.*;
  */
 public class Dz8 {
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(Window::new);
+        SwingUtilities.invokeLater(() -> new Game(new Field()));
     }
 }
