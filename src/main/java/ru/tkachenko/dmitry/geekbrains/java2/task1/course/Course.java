@@ -11,9 +11,9 @@ import ru.tkachenko.dmitry.geekbrains.java2.task1.competitors.Team;
  */
 public class Course {
 
-    Obstacle[] obstacles;
+    private Obstacle[] obstacles;
 
-    public Course(Obstacle[] obstacles) {
+    public Course(Obstacle... obstacles) {
         this.obstacles = obstacles;
     }
 

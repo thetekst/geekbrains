@@ -8,10 +8,10 @@ package ru.tkachenko.dmitry.geekbrains.java2.task1.competitors;
  */
 public class Team {
 
-    String teamName;
-    Competitor[] competitors;
+    private String teamName;
+    private Competitor[] competitors;
 
-    public Team(String teamName, Competitor[] competitors) {
+    public Team(String teamName, Competitor... competitors) {
         this.teamName = teamName;
         this.competitors = competitors;
     }

@@ -32,18 +32,14 @@ import ru.tkachenko.dmitry.geekbrains.java2.task1.course.*;
 public class Task1 {
     public static void main(String[] args) {
 
-        Obstacle[] obstacle = {new Cross(300), new Wall(2),
-                new Cross(800), new Water(5)};
-        Course course1 = new Course(obstacle);
+        Course course1 = new Course(new Cross(300), new Wall(2),
+                new Cross(800), new Water(5));
 
-        Competitor[] competitors = {new Human("Bob"), new Cat("Barsik"),
-                new Dog("Bobik"), new Dog("Sharik")};
+        Team team1 = new Team("Team 1", new Human("Bob"), new Cat("Barsik"),
+                new Dog("Bobik"), new Dog("Sharik"));
 
-        Team team1 = new Team("Team 1", competitors);
-
-        Team team2 = new Team("Team 2", new Competitor[]{
-                new Human("Molly"), new Cat("Frank"),
-                new Dog("Tom"), new Dog("Chip")});
+        Team team2 = new Team("Team 2", new Human("Molly"), new Cat("Frank"),
+                new Dog("Tom"), new Dog("Chip"));
 
 
         course1.doIt(team1);
