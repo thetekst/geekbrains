@@ -1,57 +1,61 @@
 package ru.tkachenko.dmitry.geekbrains.java2.task2;
 
+import ru.tkachenko.dmitry.geekbrains.java2.task2.exception.*;
+import ru.tkachenko.dmitry.geekbrains.java2.task2.tools.Converter;
+
 /**
+ * 1 Напишите метод на вход которого подается двумерный строковый массив размером 4х4, при
+ * подаче массива другого размера необходимо бросить исключение MyArraySizeException.
+ *
+ * 2 Далее метод должен пройтись по всем элементам массива, преобразовать в int, и
+ * просуммировать их. Если в каком-то элементе массива не удалось преобразование
+ * (например, в ячейке лежит символ вместо числа), необходимо бросить исключение
+ * MyArrayDataException, с детализацией в какой именно ячейке лежат неверные данные.
+ *
+ * 3 В методе main() необходимо вызвать полученный метод, обработать возможные исключения
+ * MySizeArrayException и MyArrayDataException, и вывести результат расчета.
+
  * @author Dmitry Tkachenko
  * @version 1.0 2/24/17
  */
 public class Task2 {
     public static void main(String[] args) {
-        String correctMatrix = "1 3 1 2\n2 3 2 2\n5 6 7 1\n3 3 1 0";
-        String wrongSizeMatrix = "1 3 2\n2 3 2 2\n5 6 7 1\n3 3 1 0";
-        String wrongChar = "1 3 1 2\n2 3 @ 2\n5 6 7 1\n3 3 1 0";
+        String[][] correctMatrix = {
+                {"3", "2", "3", "3"},
+                {"3", "6", "1", "4"},
+                {"0", "2", "7", "2"},
+                {"0", "2", "7", "2"}
+        };
+        String[][] wrongSizeMatrix = {
+                {"3", "2", "3", "3"},
+                {"6", "1"},
+                {"0", "2", "7", "3"},
+                {"0", "2", "7", "3"}
+        };
+        String[][] wrongChar = {
+                {"3", "2", "3", "3"},
+                {"6", "1", "", "3"},
+                {"0", "2", "7", "3"},
+                {"0", "2", "7", "3"}
+        };
 
         try {
-            System.out.println(Task2.strConverter(correctMatrix));
-        } catch (MatrixSizeException e) {
-            e.printStackTrace();
+            System.out.println(Converter.strConverter(correctMatrix));
+        } catch (MyArrayDataException | MyArraySizeException e) {
+            e.getMessage();
+        }
+
+
+        try {
+            System.out.println(Converter.strConverter(wrongSizeMatrix));
+        } catch (MyArrayDataException | MyArraySizeException e) {
+            System.err.println(e.getMessage());
         }
 
         try {
-            System.out.println(Task2.strConverter(wrongSizeMatrix));
-        } catch (MatrixSizeException e) {
-            e.printStackTrace();
+            System.out.println(Converter.strConverter(wrongChar));
+        } catch (MyArrayDataException | MyArraySizeException e) {
+            System.err.println(e.getMessage());
         }
-
-        try {
-            System.out.println(Task2.strConverter(wrongChar));
-        } catch (NumberFormatException e) {
-            System.err.println("wrongChar: NumberFormatException");
-        } catch (MatrixSizeException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private static int strConverter(String str) throws MatrixSizeException {
-        String[] array = str.split("\n");
-        int sum = 0;
-
-        if (4 != array.length) throw new MatrixSizeException();
-
-        for (String anArray : array) {
-            String[] line = anArray.split(" ");
-
-            if (4 != line.length) throw new MatrixSizeException();
-
-            for (String aLine : line) {
-
-                try {
-                    sum += Integer.parseInt(aLine);
-                } catch (NumberFormatException e) {
-                    throw new NumberFormatException();
-                }
-            }
-        }
-
-        return sum / 2;
     }
 }
