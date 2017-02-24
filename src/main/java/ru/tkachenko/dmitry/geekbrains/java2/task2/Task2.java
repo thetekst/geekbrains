@@ -6,48 +6,41 @@ package ru.tkachenko.dmitry.geekbrains.java2.task2;
  */
 public class Task2 {
     public static void main(String[] args) {
-        String test1 = "1 3 1 2\n2 3 2 2\n5 6 7 1\n3 3 1 0";
-        String test2 = "1 3 2\n2 3 2 2\n5 6 7 1\n3 3 1 0";
-
-        String test3 = "1 3 1 2\n2 3 @ 2\n5 6 7 1\n3 3 1 0";
+        String correctMatrix = "1 3 1 2\n2 3 2 2\n5 6 7 1\n3 3 1 0";
+        String wrongSizeMatrix = "1 3 2\n2 3 2 2\n5 6 7 1\n3 3 1 0";
+        String wrongChar = "1 3 1 2\n2 3 @ 2\n5 6 7 1\n3 3 1 0";
 
         try {
-            System.out.println(Task2.strConverter(test1));
-        } catch (NumberFormatException e) {
-            System.err.println("test 1 NumberFormatException");
-        } catch (Exception e) {
-            System.err.println("test 1 Matrix 4x4 Exception");
+            System.out.println(Task2.strConverter(correctMatrix));
+        } catch (MatrixSizeException e) {
+            e.printStackTrace();
         }
 
         try {
-            System.out.println(Task2.strConverter(test2));
-        } catch (NumberFormatException e) {
-            System.err.println("test 2 NumberFormatException");
-        } catch (Exception e) {
-            System.err.println("test 2 Matrix 4x4 Exception");
+            System.out.println(Task2.strConverter(wrongSizeMatrix));
+        } catch (MatrixSizeException e) {
+            e.printStackTrace();
         }
 
         try {
-            System.out.println(Task2.strConverter(test3));
+            System.out.println(Task2.strConverter(wrongChar));
         } catch (NumberFormatException e) {
-            System.err.println("test 3 NumberFormatException");
-        } catch (Exception e) {
-            System.err.println("test 3 Matrix 4x4 Exception");
+            System.err.println("wrongChar: NumberFormatException");
+        } catch (MatrixSizeException e) {
+            e.printStackTrace();
         }
     }
 
-    private static int strConverter(String str) throws Exception {
+    private static int strConverter(String str) throws MatrixSizeException {
         String[] array = str.split("\n");
         int sum = 0;
 
-        if (4 != array.length) {
-            throw new Exception();
-        }
+        if (4 != array.length) throw new MatrixSizeException();
 
         for (String anArray : array) {
             String[] line = anArray.split(" ");
 
-            if (4 != line.length) throw new Exception();
+            if (4 != line.length) throw new MatrixSizeException();
 
             for (String aLine : line) {
 
