@@ -1,14 +1,8 @@
 package ru.tkachenko.dmitry.geekbrains.java1.dz8.gui.panel;
 
-import ru.tkachenko.dmitry.geekbrains.java1.dz8.gui.frame.Field;
-
 import javax.swing.*;
 import javax.swing.border.LineBorder;
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 
 /**
@@ -17,13 +11,14 @@ import java.awt.event.ActionListener;
 public class Tile extends JPanel {
     JButton btn;
 
-    public Tile(String btnName) {
-        setBorder(new LineBorder(Color.black, 2));
-        setName(btnName);
+    public Tile(int row, int col) {
+        setLayout(new GridLayout(row, col));
+//        setBorder(new LineBorder(Color.black, 2));
+//        setName(btnName);
 //        this.btn = new JButton("*");
 //        add(btn);
 
-//        addActionListener(new Field.LabelListener());
+//        addActionListener(new Board.LabelListener());
     }
 
 
