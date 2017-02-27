@@ -41,20 +41,20 @@ public class Task2 {
 
         try {
             System.out.println(Converter.strConverter(correctMatrix));
-        } catch (MyArrayDataException | MyArraySizeException e) {
+        } catch (CustomException e) {
             e.getMessage();
         }
 
 
         try {
             System.out.println(Converter.strConverter(wrongSizeMatrix));
-        } catch (MyArrayDataException | MyArraySizeException e) {
+        } catch (CustomException e) {
             System.err.println(e.getMessage());
         }
 
         try {
             System.out.println(Converter.strConverter(wrongChar));
-        } catch (MyArrayDataException | MyArraySizeException e) {
+        } catch (CustomException e) {
             System.err.println(e.getMessage());
         }
     }
