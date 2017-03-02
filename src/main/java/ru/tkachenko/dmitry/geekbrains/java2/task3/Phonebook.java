@@ -1,8 +1,6 @@
 package ru.tkachenko.dmitry.geekbrains.java2.task3;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Dmitry Tkachenko
@@ -10,26 +8,26 @@ import java.util.Map;
  */
 class Phonebook {
 
-    private Map<String, ArrayList<String>> map;
+    private Map<String, HashSet<String>> map;
 
     Phonebook() {
         this.map = new HashMap<>();
     }
 
     void add(String lastName, String phone) {
-        ArrayList<String> numbers;
+        HashSet<String> numbers;
 
         if (map.containsKey(lastName)) {
             numbers = map.get(lastName);
         } else {
-            numbers = new ArrayList<>();
+            numbers = new HashSet<>();
         }
         numbers.add(phone);
         map.put(lastName, numbers);
 
     }
 
-    ArrayList<String> get(String lastName) {
+    Set<String> get(String lastName) {
         return map.get(lastName);
     }
 }
