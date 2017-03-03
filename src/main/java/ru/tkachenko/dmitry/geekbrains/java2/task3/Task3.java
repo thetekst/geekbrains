@@ -1,9 +1,6 @@
 package ru.tkachenko.dmitry.geekbrains.java2.task3;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 1. Создать массив с набором слов (10-20 слов, должны встречаться повторяющиеся):
@@ -23,17 +20,20 @@ public class Task3 {
     public static void main(String[] args) {
         String[] words = {"dog", "cat", "pet", "lock", "mock", "lock", "fork", "mock", "golf", "lock"};
 
-        Map<String, Integer> map = MapTool.eachWordCounter(words);
-
-        for (Map.Entry<String, Integer> entry : map.entrySet()) {
-            System.out.printf("%s = %d\n", entry.getKey(), entry.getValue());
+        // Task 1.a
+        Map<String, Integer> map = new HashMap<>();
+        for (String word : words) {
+            map.put(word, map.getOrDefault(word, 0) + 1);
         }
-
+        System.out.println(map);
         System.out.println("");
-        Set<String> uniq = MapTool.getUniqWords(words);
+
+        // subtask 1.b.
+        Set<String> uniq = new HashSet<>(Arrays.asList(words));
         System.out.println(uniq);
-
         System.out.println("");
+
+        // subtask 2
         Phonebook pb = new Phonebook();
 
         pb.add("Ivanov", "123");
