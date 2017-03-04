@@ -15,6 +15,5 @@
 log/
 target/
 .gitignore
-geekbrains.iml
 hometasks/
 src/main/resources/
