@@ -2,8 +2,6 @@ package ru.tkachenko.dmitry.geekbrains.java2.task4;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * @author Dmitry Tkachenko
@@ -17,13 +15,12 @@ class Frame extends JFrame {
         setResizable(false);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setLayout(new BorderLayout());
 
         BigTextPanel bigTextPanel = new BigTextPanel();
         SendPanel sendPanel = new SendPanel(bigTextPanel.getTextArea());
 
         add(bigTextPanel, BorderLayout.CENTER);
-        add(sendPanel, BorderLayout.PAGE_END);
+        add(sendPanel, BorderLayout.SOUTH);
 
         setVisible(true);
     }

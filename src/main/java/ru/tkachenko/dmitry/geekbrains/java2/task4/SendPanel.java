@@ -1,14 +1,10 @@
 package ru.tkachenko.dmitry.geekbrains.java2.task4;
 
 import javax.swing.*;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultHighlighter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -40,14 +36,14 @@ class SendPanel extends JPanel {
     }
 
     private void setup() {
-        textField.setPreferredSize(new Dimension(310, 24));
+        setLayout(new BorderLayout());
         JButton btn = new JButton("Send");
 
         btn.addActionListener(new SendBtnListener());
         textField.addActionListener(new SendBtnListener());
 
-        add(textField);
-        add(btn);
+        add(textField, BorderLayout.CENTER);
+        add(btn, BorderLayout.EAST);
     }
 
     private String getTime() {

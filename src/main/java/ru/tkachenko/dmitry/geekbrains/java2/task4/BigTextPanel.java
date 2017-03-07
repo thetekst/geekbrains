@@ -26,7 +26,7 @@ class BigTextPanel extends JPanel {
         textArea.setBorder(border);
 
         JScrollPane jScrollPane = new JScrollPane(textArea);
-        add(jScrollPane);
+        add(jScrollPane, BorderLayout.CENTER);
     }
 
     JTextArea getTextArea() {
