@@ -23,7 +23,7 @@ public class MyThread extends Thread {
         calculate();
     }
 
-    private synchronized void calculate() {
+    private void calculate() {
         int len = arr.length;
 
         for (int i = 0; i < len; i++) {

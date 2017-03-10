@@ -1,5 +1,7 @@
 package ru.tkachenko.dmitry.geekbrains.java1.dz8.player;
 
+import ru.tkachenko.dmitry.geekbrains.java1.dz8.constant.Dot;
+
 import javax.swing.*;
 
 /**
@@ -12,7 +14,9 @@ public class Human extends Player {
     }
 
     @Override
-    public void action(JButton btn) {
+    public void turn(JButton btn) {
+        System.out.print("turn Human: ");
         btn.setText(dot);
+//        btn.setEnabled(false);
     }
 }

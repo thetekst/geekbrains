@@ -1,24 +1,30 @@
 package ru.tkachenko.dmitry.geekbrains.java1.dz8.player;
 
+import ru.tkachenko.dmitry.geekbrains.java1.dz8.constant.Dot;
+
 import javax.swing.*;
-import java.awt.event.ActionListener;
 
 /**
  * Created by dmitry tkachenko on 2/18/17.
  */
 public abstract class Player {
     String dot;
+    //    Board board;
     private static boolean next;
 
-    public Player(String dot) {
+    Player(String dot) {
+//        this.board = board;
         this.dot = dot;
     }
 
-    public abstract void action(JButton btn);
-
-    public void next() {
-        next = !next;
+    @Override
+    public String toString() {
+        return "Player{" +
+                "dot='" + dot + '\'' +
+                '}';
     }
+
+    public abstract void turn(JButton btn);
 
     public String getChar() {
         return dot;
