@@ -12,6 +12,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -105,6 +107,8 @@ public class Game extends JFrame {
         }
 
 //        injectTest();
+//        randomAI();
+
 
         NewGame menu = new NewGame(this);
         endGame = new EndGame(this);
@@ -120,12 +124,12 @@ public class Game extends JFrame {
         buttons[0][0].setText(Dot.X.getDot());
 //        buttons[0][1].setText(Dot.X.getDot());
 
-        buttons[1][0].setText(Dot.O.getDot());
-        buttons[1][1].setText(Dot.O.getDot());
-        buttons[1][2].setText(Dot.X.getDot());
+        buttons[1][0].setText(Dot.X.getDot());
+//        buttons[1][1].setText(Dot.O.getDot());
+//        buttons[1][2].setText(Dot.X.getDot());
 
-        buttons[2][0].setText(Dot.O.getDot());
-        buttons[2][1].setText(Dot.X.getDot());
+//        buttons[2][0].setText(Dot.O.getDot());
+//        buttons[2][1].setText(Dot.X.getDot());
         buttons[2][2].setText(Dot.O.getDot());
     }
 
@@ -134,6 +138,16 @@ public class Game extends JFrame {
         gameOver = true;
         CardLayout cl = (CardLayout) getContentPane().getLayout();
         cl.show(getContentPane(), "END");
+    }
+
+    private void printMap() {
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                System.out.printf("[%1s]", buttons[i][j].getText());
+            }
+            System.out.println();
+        }
+        System.out.println("----------------");
     }
 
     private class LabelListener implements ActionListener {
@@ -150,8 +164,12 @@ public class Game extends JFrame {
 
                     if (current instanceof Human) {
                         current.turn(btn);
+
                         step++;
                         System.out.println(step);
+
+                        System.out.println();
+                        printMap();
 
                         if (isWin(current.getChar())) {
 
@@ -167,11 +185,15 @@ public class Game extends JFrame {
                             nextPlayer();
                             current = getPlayer();
 
+
                             if (current instanceof PC) {
+
                                 current.turn(randomAI());
 
                                 step++;
                                 System.out.println(step);
+
+                                printMap();
 
                                 if (isWin(current.getChar())) {
                                     setWinLable(String.format("Player %s (%s) is win",
@@ -203,35 +225,61 @@ public class Game extends JFrame {
     }
 
     private boolean isWin(String aChar) {
-        for (int i = 0; i < ROWS; i++) {
-            for (int j = 0; j < COLS; j++) {
-                if (!buttons[j][i].getText().equals(aChar)) continue;
-                if (checkLine(i, j, 1, 0, aChar)) return true; // пытаемся построить горизонтальные линии
-                if (checkLine(i, j, 0, 1, aChar)) return true; // пытаемся построить веритикальные линии
-                if (checkLine(i, j, 1, 1, aChar))
-                    return true; // пытаемся построить диагональные линии направленные вправо-вниз
-                if (checkLine(i, j, 1, -1, aChar))
-                    return true; // пытаемся построить диагональные линии направленные вправо-вверх
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLS; col++) {
+                if (!buttons[row][col].getText().equals(aChar)) continue;
+
+                if (findRightUp(row, col, aChar)) return true;
+                if (findRight(row, col, aChar)) return true;
+                if (findRightDown(row, col, aChar)) return true;
+                if (findDown(row, col, aChar)) return true;
             }
         }
-//        if (buttons[0][0].getText().equals(aChar) && buttons[0][1].getText().equals(aChar) && buttons[0][2].getText().equals(aChar)) return true;
-//        if (buttons[1][0].getText().equals(aChar) && buttons[1][1].getText().equals(aChar) && buttons[1][2].getText().equals(aChar)) return true;
-//        if (buttons[2][0].getText().equals(aChar) && buttons[2][1].getText().equals(aChar) && buttons[2][2].getText().equals(aChar)) return true;
-//
-//        if (buttons[0][0].getText().equals(aChar) && buttons[1][0].getText().equals(aChar) && buttons[2][0].getText().equals(aChar)) return true;
-//        if (buttons[0][1].getText().equals(aChar) && buttons[1][1].getText().equals(aChar) && buttons[2][1].getText().equals(aChar)) return true;
-//        if (buttons[0][2].getText().equals(aChar) && buttons[1][2].getText().equals(aChar) && buttons[2][2].getText().equals(aChar)) return true;
-//
-//        if (buttons[0][0].getText().equals(aChar) && buttons[1][1].getText().equals(aChar) && buttons[2][2].getText().equals(aChar)) return true;
-//        if (buttons[2][0].getText().equals(aChar) && buttons[1][1].getText().equals(aChar) && buttons[0][2].getText().equals(aChar)) return true;
         return false;
     }
 
-    private boolean checkLine(int cx, int cy, int vx, int vy, String dot) {
-        // отсеиваем заранее невозможные проверки
-        if (cx + DOTS_TO_WIN * vx > ROWS || cy + DOTS_TO_WIN * vy > COLS || cy + DOTS_TO_WIN * vy < -1) return false;
-        for (int i = 0; i < DOTS_TO_WIN; i++) {
-            if (!buttons[cy + i * vy][cx + i * vx].getText().equals(dot)) return false;
+    private boolean findRightUp(int row, int col, String dot) {
+        for (int j = 0; j < DOTS_TO_WIN; j++) {
+
+            if (row < 0 || row >= ROWS || col < 0 || col >= COLS
+                    || !dot.equals(buttons[row][col].getText())) return false;
+
+            row--;
+            col++;
+        }
+        return true;
+    }
+
+    private boolean findRight(int row, int col, String dot) {
+        for (int j = 0; j < DOTS_TO_WIN; j++) {
+
+            if (row < 0 || row >= ROWS || col < 0 || col >= COLS
+                    || !dot.equals(buttons[row][col].getText())) return false;
+
+            col++;
+        }
+        return true;
+    }
+
+    private boolean findRightDown(int row, int col, String dot) {
+        for (int j = 0; j < DOTS_TO_WIN; j++) {
+
+            if (row < 0 || row >= ROWS || col < 0 || col >= COLS
+                    || !dot.equals(buttons[row][col].getText())) return false;
+
+            row++;
+            col++;
+        }
+        return true;
+    }
+
+    private boolean findDown(int row, int col, String dot) {
+        for (int j = 0; j < DOTS_TO_WIN; j++) {
+
+            if (row < 0 || row >= ROWS || col < 0 || col >= COLS
+                    || !dot.equals(buttons[row][col].getText())) return false;
+
+            row++;
         }
         return true;
     }
@@ -240,57 +288,46 @@ public class Game extends JFrame {
         return step == COUNT;
     }
 
+    private int[] findDot(String dot) {
+        String empty = Dot.EMPTY.getDot();
+
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLS; col++) {
+                if (buttons[row][col].getText().equals(empty)) {
+                    buttons[row][col].setText(dot);
+                    if (isWin(dot)) {
+                        buttons[row][col].setText(empty);
+                        return new int[]{row, col};
+                    }
+                    buttons[row][col].setText(empty);
+                }
+            }
+        }
+        System.out.println();
+        return new int[]{-1, -1};
+    }
+
     private JButton randomAI() {
         int row;
         int col;
         Random random = new Random();
+        int[] coords;
 
-        do {
-            row = random.nextInt(ROWS); // 0 ... ROWS
-            col = random.nextInt(COLS); // 0 ... COLS
-        } while (!isContinue(row, col));
-//        System.out.printf("[%d][%d] = \"%s\" ", row, col, buttons[row][col].getText());
+        coords = findDot(Dot.O.getDot());
 
-        return buttons[row][col];
+        if (-1 == coords[0]) {
+            coords = findDot(Dot.X.getDot());
+        }
+
+        if (-1 == coords[0]) {
+            do {
+                row = random.nextInt(ROWS); // 0 ... ROWS
+                col = random.nextInt(COLS); // 0 ... COLS
+            } while (!isContinue(row, col));
+            coords[0] = row;
+            coords[1] = col;
+        }
+
+        return buttons[coords[0]][coords[1]];
     }
-
-//    private JButton ai() {
-//        int x = -1, y = -1;
-//        for (int i = 0; i < ROWS; i++) {
-//            for (int j = 0; j < COLS; j++) {
-//                if (isCellEmpty(i, j)) {
-//                    buttons[j][i].getText().equals() = O_DOT;
-//                    if (checkWinNew(O_DOT)) {
-//                        x = i;
-//                        y = j;
-//                    }
-//                    buttons[j][i].getText().equals() = EMPTY_DOT;
-//                }
-//
-//            }
-//        }
-//        if (x == -1 && y == -1) {
-//            for (int i = 0; i < SIZE; i++) {
-//                for (int j = 0; j < SIZE; j++) {
-//                    if (isCellEmpty(i, j)) {
-//                        buttons[j][i].getText().equals() = X_DOT;
-//                        if (checkWinNew(X_DOT)) {
-//                            x = i;
-//                            y = j;
-//                        }
-//                        buttons[j][i].getText().equals() = EMPTY_DOT;
-//                    }
-//
-//                }
-//            }
-//        }
-//        if (x == -1 && y == -1) {
-//            do {
-//                x = rand.nextInt(SIZE);
-//                y = rand.nextInt(SIZE);
-//            } while (!isCellEmpty(x, y));
-//        }
-//        System.out.printf("AI сделал ход %d; %d\n", x + 1, y + 1);
-//        buttons[y][x].getText().equals() = O_DOT;
-//    }
 }
