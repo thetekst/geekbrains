@@ -237,13 +237,7 @@ public class Game extends JFrame {
     }
 
     private boolean isBoardFull() {
-
-        if (step == COUNT) {
-            System.out.println("Ничья");
-            endGame.setLabel("Ничья");
-            return true;
-        }
-        return false;
+        return step == COUNT;
     }
 
     private JButton randomAI() {
