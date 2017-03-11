@@ -18,17 +18,19 @@ public class NewGame extends JPanel {
     public NewGame(Game game) {
         this.game = game;
         setLayout(new FlowLayout());
-        this.btn = new JButton("Start");
+        this.btn = new JButton("New game");
         btn.addActionListener(new BtnListener());
         add(btn);
     }
+
 
     private class BtnListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            CardLayout cl = (CardLayout) game.getContentPane().getLayout();
-            cl.show(game.getContentPane(), "PLAY");
+            game.emptyBoard();
+//            CardLayout cl = (CardLayout) game.getContentPane().getLayout();
+//            cl.show(game.getContentPane(), "PLAY");
         }
     }
 }

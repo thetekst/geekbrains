@@ -1,9 +1,7 @@
 package ru.tkachenko.dmitry.geekbrains.java1.dz8.logic;
 
 import ru.tkachenko.dmitry.geekbrains.java1.dz8.constant.Dot;
-import ru.tkachenko.dmitry.geekbrains.java1.dz8.gui.EndGame;
 import ru.tkachenko.dmitry.geekbrains.java1.dz8.gui.NewGame;
-import ru.tkachenko.dmitry.geekbrains.java1.dz8.gui.Tile;
 import ru.tkachenko.dmitry.geekbrains.java1.dz8.player.Human;
 import ru.tkachenko.dmitry.geekbrains.java1.dz8.player.PC;
 import ru.tkachenko.dmitry.geekbrains.java1.dz8.player.Player;
@@ -12,8 +10,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -23,7 +19,6 @@ public class Game extends JFrame {
     private final int ROWS;
     private final int COLS;
     private final int COUNT;
-    private Tile tiles;
     private final int DOTS_TO_WIN;
     private Player player1;
     private Player player2;
@@ -31,7 +26,8 @@ public class Game extends JFrame {
     private int step;
     private JButton[][] buttons;
     private boolean gameOver;
-    private EndGame endGame;
+    private JLabel endGameLabel;
+    private final boolean VERBOSE;
 
     public Game(Player player1, Player player2) {
         ROWS = 3;
@@ -40,6 +36,7 @@ public class Game extends JFrame {
         step = 0;
         buttons = new JButton[ROWS][COLS];
         DOTS_TO_WIN = 3;
+        VERBOSE = false;
 
         this.player1 = player1;
         this.player2 = player2;
@@ -63,7 +60,7 @@ public class Game extends JFrame {
 
     private void setup() {
         setTitle("TIC-TAC-toe");
-        setSize(new Dimension(250, 250));
+        setSize(new Dimension(250, 300));
         setResizable(false);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -78,6 +75,7 @@ public class Game extends JFrame {
         trigger = true;
         step = 0;
         gameOver = false;
+        endGameLabel.setText(" ");
 
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
@@ -87,13 +85,9 @@ public class Game extends JFrame {
     }
 
     private void setupLayout() {
-        setLayout(new CardLayout());
+        setLayout(new BorderLayout());
 
-//        setLayout(new BorderLayout());
-
-        this.tiles = new Tile(ROWS, COLS);
-//        JPanel panel = new JPanel();
-//        panel.setLayout(new GridLayout(ROWS, COLS));
+        JPanel tiles = new JPanel(new GridLayout(ROWS, COLS));
 
         JButton btn;
 
@@ -107,37 +101,21 @@ public class Game extends JFrame {
         }
 
 //        injectTest();
-//        randomAI();
+//        turnAI();
 
 
-        NewGame menu = new NewGame(this);
-        endGame = new EndGame(this);
+        endGameLabel = new JLabel(" ");
 
-//        add(menu, "MENU");
-        add(tiles, "PLAY");
-        add(endGame, "END");
+        add(new NewGame(this), BorderLayout.NORTH);
+        add(tiles, BorderLayout.CENTER);
+        add(endGameLabel, BorderLayout.SOUTH);
     }
 
-    private void injectTest() {
-        step = 7;
 
-        buttons[0][0].setText(Dot.X.getDot());
-//        buttons[0][1].setText(Dot.X.getDot());
-
-        buttons[1][0].setText(Dot.X.getDot());
-//        buttons[1][1].setText(Dot.O.getDot());
-//        buttons[1][2].setText(Dot.X.getDot());
-
-//        buttons[2][0].setText(Dot.O.getDot());
-//        buttons[2][1].setText(Dot.X.getDot());
-        buttons[2][2].setText(Dot.O.getDot());
-    }
 
     private void setWinLable(String text) {
-        endGame.setLabel(text);
+        endGameLabel.setText(text);
         gameOver = true;
-        CardLayout cl = (CardLayout) getContentPane().getLayout();
-        cl.show(getContentPane(), "END");
     }
 
     private void printMap() {
@@ -159,20 +137,21 @@ public class Game extends JFrame {
                 JButton btn = (JButton) e.getSource();
                 String textBtn = btn.getText();
 
-                if (Dot.EMPTY.getDot().equals(textBtn)) {
+                if (!gameOver && Dot.EMPTY.getDot().equals(textBtn)) {
                     Player current = getPlayer();
 
                     if (current instanceof Human) {
                         current.turn(btn);
 
                         step++;
-                        System.out.println(step);
 
-                        System.out.println();
-                        printMap();
+                        if (VERBOSE) {
+                            System.out.println(step);
+                            System.out.println();
+                            printMap();
+                        }
 
                         if (isWin(current.getChar())) {
-
                             setWinLable(String.format("Player %s (%s) is win",
                                     current.getClass().getSimpleName(),
                                     current.getChar()));
@@ -188,12 +167,14 @@ public class Game extends JFrame {
 
                             if (current instanceof PC) {
 
-                                current.turn(randomAI());
+                                current.turn(turnAI());
 
                                 step++;
-                                System.out.println(step);
-
-                                printMap();
+                                if (VERBOSE) {
+                                    System.out.println(step);
+                                    System.out.println();
+                                    printMap();
+                                }
 
                                 if (isWin(current.getChar())) {
                                     setWinLable(String.format("Player %s (%s) is win",
@@ -216,12 +197,8 @@ public class Game extends JFrame {
     private boolean isContinue(int row, int col) {
         if (row < 0 || row >= ROWS || col < 0 || col >= COLS) return false;
 
-        if (buttons[row][col].getText().equals(Dot.EMPTY.getDot())) {
-//            System.out.printf("[%s] == [%s]\n", buttons[row][col].getText(), DOT_EMPTY);
-            return true;
-        }
+        return buttons[row][col].getText().equals(Dot.EMPTY.getDot());
 
-        return false;
     }
 
     private boolean isWin(String aChar) {
@@ -288,7 +265,7 @@ public class Game extends JFrame {
         return step == COUNT;
     }
 
-    private int[] findDot(String dot) {
+    private int[] findPossibility(String dot) {
         String empty = Dot.EMPTY.getDot();
 
         for (int row = 0; row < ROWS; row++) {
@@ -303,20 +280,22 @@ public class Game extends JFrame {
                 }
             }
         }
-        System.out.println();
+        if (VERBOSE) {
+            System.out.println();
+        }
         return new int[]{-1, -1};
     }
 
-    private JButton randomAI() {
+    private JButton turnAI() {
         int row;
         int col;
         Random random = new Random();
         int[] coords;
 
-        coords = findDot(Dot.O.getDot());
+        coords = findPossibility(Dot.O.getDot());
 
         if (-1 == coords[0]) {
-            coords = findDot(Dot.X.getDot());
+            coords = findPossibility(Dot.X.getDot());
         }
 
         if (-1 == coords[0]) {
@@ -329,5 +308,20 @@ public class Game extends JFrame {
         }
 
         return buttons[coords[0]][coords[1]];
+    }
+
+    private void injectTest() {
+        step = 7;
+
+        buttons[0][0].setText(Dot.X.getDot());
+//        buttons[0][1].setText(Dot.X.getDot());
+
+        buttons[1][0].setText(Dot.X.getDot());
+//        buttons[1][1].setText(Dot.O.getDot());
+//        buttons[1][2].setText(Dot.X.getDot());
+
+//        buttons[2][0].setText(Dot.O.getDot());
+//        buttons[2][1].setText(Dot.X.getDot());
+        buttons[2][2].setText(Dot.O.getDot());
     }
 }

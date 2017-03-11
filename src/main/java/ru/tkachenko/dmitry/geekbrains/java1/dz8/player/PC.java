@@ -20,8 +20,7 @@ public class PC extends Player {
 //        JButton btn = randomAI();
         btn.setText(dot);
 //        btn.setEnabled(false);
-//        randomAI();
-        System.out.print("turn PC: ");
+//        System.out.print("turn PC: ");
     }
 
     private JButton randomAI() {

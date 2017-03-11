@@ -15,7 +15,7 @@ public class Human extends Player {
 
     @Override
     public void turn(JButton btn) {
-        System.out.print("turn Human: ");
+//        System.out.print("turn Human: ");
         btn.setText(dot);
 //        btn.setEnabled(false);
     }
