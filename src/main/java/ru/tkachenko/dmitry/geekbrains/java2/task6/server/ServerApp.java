@@ -1,4 +1,4 @@
-package ru.tkachenko.dmitry.geekbrains.java2.task6;
+package ru.tkachenko.dmitry.geekbrains.java2.task6.server;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,18 +12,15 @@ import java.util.Scanner;
  */
 class ServerApp {
 
-    private Socket socket;
     private final int PORT;
     private final boolean VERBOSE;
 
     ServerApp(int port) {
-        this.socket = null;
         this.PORT = port;
         this.VERBOSE = true;
     }
 
     ServerApp(int port, boolean verbose) {
-        this.socket = null;
         this.PORT = port;
         this.VERBOSE = verbose;
     }
@@ -33,19 +30,25 @@ class ServerApp {
 
             if (VERBOSE) System.out.println("Сервер запущен, ожидаем подключения...");
 
-            socket = server.accept();
-            if (VERBOSE) System.out.println("Клиент подключился");
+            try (Socket socket = server.accept()) {
 
-            Scanner in = new Scanner(socket.getInputStream());
-            PrintWriter out = new PrintWriter(socket.getOutputStream());
+                if (VERBOSE) System.out.println("Клиент подключился");
 
-            String str;
+                try (Scanner in = new Scanner(socket.getInputStream());
+                     PrintWriter out = new PrintWriter(socket.getOutputStream())) {
 
-            while (true) {
-                str = in.nextLine();
-                if (str.equals("quit")) break;
-                out.println("echo: " + str);
-                out.flush();
+                    String str;
+
+                    while (true) {
+                        str = in.nextLine();
+                        if (str.equals("quit")) break;
+                        out.println("Server: " + str);
+                        out.flush();
+                    }
+                }
+
+            } catch (IOException e) {
+                System.out.println("Ошибка запуска сервера");
             }
         } catch (IOException e) {
             System.out.println("Ошибка инициализации сервера");

@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Main-Class: ru.tkachenko.dmitry.geekbrains.java2.task6.server.MainServ
+ er
+

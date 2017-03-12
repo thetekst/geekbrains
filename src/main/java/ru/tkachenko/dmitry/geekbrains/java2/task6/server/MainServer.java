@@ -1,4 +1,4 @@
-package ru.tkachenko.dmitry.geekbrains.java2.task6;
+package ru.tkachenko.dmitry.geekbrains.java2.task6.server;
 
 /**
  * @author Dmitry Tkachenko
@@ -17,9 +17,14 @@ package ru.tkachenko.dmitry.geekbrains.java2.task6;
  *          ВАЖНО! Сервер общается только с одним клиентом, т.е. не нужно запускать цикл, который будет ожидать
  *          второго/третьего/n-го клиентов
  */
-public class Task6 {
+public class MainServer {
 
     public static void main(String[] args) {
-        new ServerApp(8290).start();
+
+        try {
+            new ServerApp(8290).start();
+        } catch (Exception e) {
+            System.out.println("Клиент отсоединился и сервер прекратил работу");
+        }
     }
 }
