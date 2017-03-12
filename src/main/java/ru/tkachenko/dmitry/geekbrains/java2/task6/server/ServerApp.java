@@ -35,7 +35,7 @@ class ServerApp {
                 if (VERBOSE) System.out.println("Клиент подключился");
 
                 try (Scanner in = new Scanner(socket.getInputStream());
-                     PrintWriter out = new PrintWriter(socket.getOutputStream())) {
+                     PrintWriter out = new PrintWriter(socket.getOutputStream(), true)) {
 
                     String str;
 
@@ -43,7 +43,6 @@ class ServerApp {
                         str = in.nextLine();
                         if (str.equals("quit")) break;
                         out.println("Server: " + str);
-                        out.flush();
                     }
                 }
 
