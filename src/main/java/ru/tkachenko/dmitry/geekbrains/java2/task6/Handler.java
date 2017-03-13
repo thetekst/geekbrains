@@ -27,6 +27,7 @@ public class Handler {
 
             while (true) {
                 msg = in.readUTF();
+
                 if (msg.equals("bye")) {
                     System.out.printf("%s stop writing%n", className);
                     break;

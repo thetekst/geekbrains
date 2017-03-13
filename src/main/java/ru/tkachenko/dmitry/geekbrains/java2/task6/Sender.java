@@ -17,7 +17,6 @@ public class Sender implements Runnable {
     public Sender(Scanner in, DataOutputStream out) {
         this.in = in;
         this.out = out;
-        this.flag = true;
     }
 
     @Override
