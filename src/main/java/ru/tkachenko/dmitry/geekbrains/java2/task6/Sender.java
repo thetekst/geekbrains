@@ -20,16 +20,12 @@ public class Sender implements Runnable {
         this.flag = true;
     }
 
-    public void setFlag(boolean flag) {
-        this.flag = flag;
-    }
-
     @Override
     public void run() {
 
         String writer;
         try {
-            while (flag) {
+            while (true) {
                 writer = in.nextLine();
                 out.writeUTF(writer);
                 out.flush();
