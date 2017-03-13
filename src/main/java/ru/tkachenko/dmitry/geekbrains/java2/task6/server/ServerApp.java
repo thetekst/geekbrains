@@ -13,7 +13,7 @@ import java.net.Socket;
 class ServerApp {
 
     private final int PORT;
-    private final boolean VERBOSE;
+    private boolean VERBOSE;
 
     ServerApp(int port) {
         this.PORT = port;
@@ -21,7 +21,7 @@ class ServerApp {
     }
 
     ServerApp(int port, boolean verbose) {
-        this.PORT = port;
+        this(port);
         this.VERBOSE = verbose;
     }
 
