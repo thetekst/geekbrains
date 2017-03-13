@@ -29,13 +29,12 @@ public class Handler {
                 msg = in.readUTF();
                 if (msg.equals("bye")) {
                     System.out.printf("%s stop writing%n", className);
-                    sender.setFlag(false);
                     break;
                 }
                 System.out.printf("%s says: %s%n", className, msg);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("writer stopped");
         }
     }
 }

@@ -27,15 +27,19 @@ public class Sender implements Runnable {
     @Override
     public void run() {
 
-        String serverWrite;
+        String writer;
         try {
             while (flag) {
-                serverWrite = in.nextLine();
-                out.writeUTF(serverWrite);
+                writer = in.nextLine();
+                out.writeUTF(writer);
                 out.flush();
+
+                if (writer.equals("bye")) {
+                    break;
+                }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("app stopped");
         }
     }
 }
