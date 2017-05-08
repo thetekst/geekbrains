@@ -2,7 +2,6 @@ package ru.tkachenko.dmitry.geekbrains.java3.task1;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * @author Dmitry Tkachenko
@@ -47,5 +46,4 @@ class Task1 {
     static <T> ArrayList<T> convertToList(T[] array) {
         return new ArrayList<>(Arrays.asList(array));
     }
-
 }
