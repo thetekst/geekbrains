@@ -39,7 +39,7 @@ public class Box<T extends Fruit> {
         fruits.addAll(fruit);
     }
 
-    public boolean compare(Box o) {
+    public boolean compare(Box<?> o) {
         return this.getWeight() == o.getWeight();
     }
 }
