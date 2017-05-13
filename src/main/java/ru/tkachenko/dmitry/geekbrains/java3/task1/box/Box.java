@@ -40,6 +40,6 @@ public class Box<T extends Fruit> {
     }
 
     public boolean compare(Box<?> o) {
-        return this.getWeight() == o.getWeight();
+        return Math.abs(this.getWeight() - o.getWeight()) < 0.001;
     }
 }
