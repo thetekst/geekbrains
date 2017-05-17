@@ -1,6 +1,7 @@
 package ru.tkachenko.dmitry.geekbrains.java3.task1.box;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 /**
@@ -9,37 +10,43 @@ import java.util.Collection;
  */
 public class Box<T extends Fruit> {
 
-    private Collection<T> fruits;
-    private final float weight;
+    private ArrayList<T> list;
 
-    public Box(float weight) {
-        this.weight = weight;
-        this.fruits = new ArrayList<>();
+    public Box() {
+        this.list = new ArrayList<>();
     }
 
-    public Box(Collection<T> fruits, float weight) {
-        this.fruits = fruits;
-        this.weight = weight;
+    @SafeVarargs
+    public Box(T... fruits) {
+        this.list = new ArrayList<>(Arrays.asList(fruits));
     }
 
     public float getWeight() {
-        return fruits.size() * weight;
+        float weight = 0.0f;
+
+        for (T o : list) {
+            weight += o.getWeight();
+        }
+
+        return weight;
     }
 
     public void pour(Box<T> another) {
-        another.add(fruits);
-        fruits.clear();
+        another.list.addAll(list);
+        list.clear();
     }
 
     public void add(T fruit) {
-        fruits.add(fruit);
+        list.add(fruit);
     }
 
     public void add(Collection<T> fruit) {
-        fruits.addAll(fruit);
+        list.addAll(fruit);
     }
 
     public boolean compare(Box<?> o) {
+
+        // избегаем ошибки округления с помощью дельты
         return Math.abs(this.getWeight() - o.getWeight()) < 0.001;
     }
 }

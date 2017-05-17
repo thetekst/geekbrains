@@ -34,8 +34,17 @@ class Task1 {
      * 1. Написать метод, который меняет два элемента массива местами.
      * (массив может быть любого ссылочного типа);
      */
-    static <T> void shift(T[] array, int firstIndex, int secondIndex) {
+
+    // в данной задаче обобщение лишнее
+    static <T> void swap(T[] array, int firstIndex, int secondIndex) {
         T oneVal = array[firstIndex];
+        array[firstIndex] = array[secondIndex];
+        array[secondIndex] = oneVal;
+    }
+
+    // поэтому, более правильный вариант такой
+    static void swapObj(Object[] array, int firstIndex, int secondIndex) {
+        Object oneVal = array[firstIndex];
         array[firstIndex] = array[secondIndex];
         array[secondIndex] = oneVal;
     }

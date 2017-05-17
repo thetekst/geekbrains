@@ -19,7 +19,7 @@ public class Task1Test {
         Integer[] expected = {56, 31, 8};
         Integer[] actual = {8, 31, 56};
 
-        Task1.shift(actual, 2, 0);
+        Task1.swap(actual, 2, 0);
         Assert.assertArrayEquals(expected, actual);
     }
 
@@ -28,7 +28,7 @@ public class Task1Test {
         String[] expected = {"one", "two", "three"};
         String[] actual = {"one", "three", "two"};
 
-        Task1.shift(actual, 2, 1);
+        Task1.swap(actual, 2, 1);
         Assert.assertArrayEquals(expected, actual);
     }
 
@@ -37,7 +37,7 @@ public class Task1Test {
         Object[] expected = {"one", 2, "three"};
         Object[] actual = {"one", "three", 2};
 
-        Task1.shift(actual, 2, 1);
+        Task1.swap(actual, 2, 1);
         Assert.assertArrayEquals(expected, actual);
     }
 
@@ -55,22 +55,12 @@ public class Task1Test {
 
     @Test
     public void testDiffFruitBox() {
-        List<Apple> apples = new ArrayList<>(
-                Arrays.asList(
-                        new Apple(),
-                        new Apple())
-        );
-        Box<Apple> appleBox = new Box<>(apples, 1.0f);
+
+        Box<Apple> appleBox = new Box<>(new Apple(), new Apple());
         appleBox.add(new Apple());
         appleBox.add(new Apple());
 
-        Box<Orange> orangeBox = new Box<>(
-                Arrays.asList(
-                        new Orange(),
-                        new Orange(),
-                        new Orange()
-                ), 1.5f
-        );
+        Box<Orange> orangeBox = new Box<>(new Orange(), new Orange(), new Orange());
 
         Assert.assertNotEquals(appleBox.getWeight(), orangeBox.getWeight());
         Assert.assertFalse(appleBox.compare(orangeBox));
@@ -83,7 +73,8 @@ public class Task1Test {
                         new Apple(),
                         new Apple())
         );
-        Box<Apple> appleBox1 = new Box<>(apples1, 1.0f);
+        Box<Apple> appleBox1 = new Box<>();
+        appleBox1.add(apples1);
         appleBox1.add(new Apple());
         appleBox1.add(new Apple());
 
@@ -94,7 +85,7 @@ public class Task1Test {
                         new Apple(),
                         new Apple())
         );
-        Box<Apple> appleBox2 = new Box<>(1.0f);
+        Box<Apple> appleBox2 = new Box<>();
         appleBox2.add(apples2);
 
         Assert.assertTrue(appleBox1.compare(appleBox2));
