@@ -27,16 +27,17 @@ import java.util.Enumeration;
  */
 public class Task3 {
 
+    private static final int CHARS_IN_PAGE = 1800;
     private static final int DEFAULT_BUFFER_SIZE = 1024;
     private static final String FILE_PATH = "java3-task3/src/main/resources";
 
     public static void readAndPrintByteArray() {
 
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-
 //        System.out.println(System.getProperty("user.dir"));
 
-        try (FileInputStream fin = new FileInputStream(FILE_PATH + "/50byte.txt")) {
+        try (final InputStream fin = new FileInputStream(FILE_PATH + "/50byte.txt");
+             final ByteArrayOutputStream bytes = new ByteArrayOutputStream()) {
+
             final byte[] buf = new byte[DEFAULT_BUFFER_SIZE];
             int len;
 
@@ -44,13 +45,11 @@ public class Task3 {
                 bytes.write(buf, 0, len);
             }
 
+            System.out.println(bytes);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        byte[] barray = bytes.toByteArray();
-
-        System.out.println(Arrays.toString(barray));
     }
 
     public static void merge() {
@@ -86,8 +85,37 @@ public class Task3 {
         }
     }
 
-    public static void cliPageReader() {
+    private static void cliPageReader() {
 
+        try (InputStream in = new FileInputStream(FILE_PATH + "/10mb.txt");
+             ByteArrayOutputStream book = new ByteArrayOutputStream()) {
+
+            byte[] buff = new byte[CHARS_IN_PAGE];
+            int len;
+
+            while ((len = in.read(buff)) > 0) {
+                book.write(buff, 0, len);
+            }
+
+            int pageCount = book.size() / CHARS_IN_PAGE;
+            System.out.printf("please enter the page: 1 - %d%n", pageCount);
+
+            int enterPage = 2;
+            int i = 0;
+            int offset = (enterPage - 1) * CHARS_IN_PAGE;
+            int turnThePages = enterPage * CHARS_IN_PAGE;
+
+            byte[] bytes = book.toByteArray();
+//            System.out.println(len);
+
+            while (i != turnThePages) {
+                System.out.print((char) bytes[offset + i]);
+                i++;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
