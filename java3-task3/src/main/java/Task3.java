@@ -5,10 +5,7 @@
 
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Enumeration;
+import java.util.*;
 
 /**
  * 1. Прочитать файл (около 50 байт) в байтовый массив и вывести этот массив в консоль;
@@ -31,9 +28,7 @@ public class Task3 {
     private static final int DEFAULT_BUFFER_SIZE = 1024;
     private static final String FILE_PATH = "java3-task3/src/main/resources";
 
-    public static void readAndPrintByteArray() {
-
-//        System.out.println(System.getProperty("user.dir"));
+    private static void readAndPrintByteArray() {
 
         try (final InputStream fin = new FileInputStream(FILE_PATH + "/50byte.txt");
              final ByteArrayOutputStream bytes = new ByteArrayOutputStream()) {
@@ -55,7 +50,7 @@ public class Task3 {
     public static void merge() {
         SequenceInputStream seq;
         ArrayList<InputStream> al = new ArrayList<>();
-        FileOutputStream out = null;
+        FileOutputStream out;
 
         try {
             al.add(new FileInputStream(FILE_PATH + "/50byte.txt"));
@@ -65,23 +60,23 @@ public class Task3 {
             al.add(new FileInputStream(FILE_PATH + "/50byte.txt"));
 
             out = new FileOutputStream(FILE_PATH + "/concat.txt");
+
+            Enumeration<InputStream> e = Collections.enumeration(al);
+
+            seq = new SequenceInputStream(e);
+
+            try {
+                int rb = seq.read();
+
+                while (rb != -1) {
+                    out.write(rb);
+                    rb = seq.read();
+                }
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }
-
-        Enumeration<InputStream> e = Collections.enumeration(al);
-
-        seq = new SequenceInputStream(e);
-
-        try {
-            int rb = seq.read();
-
-            while (rb != -1) {
-                out.write(rb);
-                rb = seq.read();
-            }
-        } catch (IOException e1) {
-            e1.printStackTrace();
         }
     }
 
@@ -97,22 +92,35 @@ public class Task3 {
                 book.write(buff, 0, len);
             }
 
-            int pageCount = book.size() / CHARS_IN_PAGE;
-            System.out.printf("please enter the page: 1 - %d%n", pageCount);
+            int page;
+            int numberOfPages = book.size() / CHARS_IN_PAGE;
+            int pages;
+            int enterPage;
+            int offset;
+            int turnThePages;
 
-            int enterPage = 2;
-            int i = 0;
-            int offset = (enterPage - 1) * CHARS_IN_PAGE;
-            int turnThePages = enterPage * CHARS_IN_PAGE;
+            Scanner input = new Scanner(System.in);
 
-            byte[] bytes = book.toByteArray();
-//            System.out.println(len);
+            while (true) {
+                pages = numberOfPages;
 
-            while (i != turnThePages) {
-                System.out.print((char) bytes[offset + i]);
-                i++;
+                do {
+                    System.out.printf("%n%nplease enter the page: 1 - %d%n", pages + 1);
+                    page = input.nextInt();
+                } while (page < 1 && page < pages);
+
+                enterPage = page;
+                offset = (enterPage - 1) * CHARS_IN_PAGE;
+                turnThePages = offset + CHARS_IN_PAGE;
+
+                byte[] bytes = book.toByteArray();
+                len = bytes.length;
+
+                while (offset != turnThePages && offset < len) {
+                    System.out.print((char) bytes[offset]);
+                    offset++;
+                }
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -120,8 +128,8 @@ public class Task3 {
 
     public static void main(String[] args) {
 
-//        readAndPrintByteArray();
+        readAndPrintByteArray();
 //        merge();
-        cliPageReader();
+//        cliPageReader();
     }
 }
