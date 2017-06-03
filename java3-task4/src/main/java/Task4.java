@@ -20,110 +20,37 @@ import java.io.*;
 */
 public class Task4 {
 
-    private final Object monitor;
-    private volatile char letter = 'A';
     private static final String FILE_PATH = "java3-task4/src/main/resources";
-
-    public Task4() {
-        this.monitor = new Object();
-    }
-
-    public void printA() {
-        synchronized (monitor) {
-            try {
-                for (int i = 0; i < 5; i++) {
-                    while (letter != 'A') {
-                        monitor.wait();
-                    }
-
-                    System.out.print('A');
-                    letter = 'B';
-                    monitor.notifyAll();
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public void printB() {
-        synchronized (monitor) {
-            try {
-                for (int i = 0; i < 5; i++) {
-                    while (letter != 'B') {
-                        monitor.wait();
-                    }
-
-                    System.out.print('B');
-                    letter = 'C';
-                    monitor.notifyAll();
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public void printC() {
-        synchronized (monitor) {
-            try {
-                for (int i = 0; i < 5; i++) {
-                    while (letter != 'C') {
-                        monitor.wait();
-                    }
-
-                    System.out.print('C');
-                    letter = 'A';
-                    monitor.notifyAll();
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
     public static void runTask1() {
         Task4 task4 = new Task4();
+        PrintLetter plt1 = new PrintLetter(task4, 'A', 'B');
+        PrintLetter plt2 = new PrintLetter(task4, 'B', 'C');
+        PrintLetter plt3 = new PrintLetter(task4, 'C', 'A');
 
-        new Thread(task4::printA, "one").start();
-        new Thread(task4::printB, "two").start();
-        new Thread(task4::printC, "three").start();
-    }
-
-    public void test(char ch) {
         try {
-            for (int i = 0; i < 5; i++) {
-                try (FileWriter fw = new FileWriter(FILE_PATH + "/readme.txt", true); BufferedWriter bw =
-                        new BufferedWriter(fw);
-                     PrintWriter out = new PrintWriter(bw)) {
-
-                    for (int j = 0; j < 10; j++) {
-                        out.print(ch);
-                    }
-
-                    out.println();
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Thread.sleep(20);
-            }
+            plt1.getThread().join();
+            plt2.getThread().join();
+            plt3.getThread().join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
     }
 
     public static void runTask2() {
         Task4 task4 = new Task4();
 
-        Thread t1 = new Thread(() -> task4.test('z'));
-        Thread t2 = new Thread(() -> task4.test('r'));
-        Thread t3 = new Thread(() -> task4.test('d'));
+        FileWriterApp fwa1 = new FileWriterApp(task4, 'a');
+        FileWriterApp fwa2 = new FileWriterApp(task4, 'b');
+        FileWriterApp fwa3 = new FileWriterApp(task4, 'c');
 
-        t1.start();
-        t2.start();
-        t3.start();
+        try {
+            fwa1.getThread().join();
+            fwa2.getThread().join();
+            fwa3.getThread().join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private static void runTask3() {
