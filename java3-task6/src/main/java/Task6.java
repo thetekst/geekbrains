@@ -7,7 +7,7 @@ import java.util.List;
 public class Task6 {
 
     public Integer[] getArrayByCriteria(Integer[] array) {
-        int len = array.length;
+        final int len = array.length;
         boolean found = false;
         List<Integer> list = new ArrayList<>();
 
@@ -24,5 +24,25 @@ public class Task6 {
         if (!found) throw new RuntimeException();
         return list.toArray(new Integer[list.size()]);
 
+    }
+
+    public boolean isArrayCorrect(int[] array) {
+        int one = 0;
+        int four = 0;
+        final int len = array.length;
+
+        for (int i = 0; i < len; i++) {
+            final int item = array[i];
+            if (item != 1 && item != 4)  {
+                return false;
+            }
+            if (1 == item) {
+                one++;
+            }
+            if (4 == item) {
+                four++;
+            }
+        }
+        return one > 0 && four > 0;
     }
 }
