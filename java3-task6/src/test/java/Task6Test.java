@@ -1,15 +1,13 @@
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Objects;
-
-import static org.junit.Assert.*;
+import java.util.List;
 
 /**
  * Created by dtkachenko on 14.06.2017.
@@ -17,15 +15,24 @@ import static org.junit.Assert.*;
 @RunWith(Parameterized.class)
 public class Task6Test {
 
-    private Task6 task6;
-    private Integer[] actual;
-    private Integer[] expected;
+    public Task6 task6;
+
+    @Parameterized.Parameter()
+    public Integer[] actual;
+
+    @Parameterized.Parameter(1)
+    public Integer[] expected;
+
 
     @Parameterized.Parameters
-    public static Collection<Object[]> data() {
+    public static Iterable data() {
         return Arrays.asList(
-                new Integer[][] {{1,3},{1,3}},
-                new Integer[][] {{1,3},{1,3}});
+                new Object[][]{
+                        {new Integer[] {1, 2, 4, 4, 2, 3, 4, 1, 7}, new Integer[] {1, 7}},
+                        {new Integer[] {10, 2, 4, 55, 2, 3, 1, 1, 7}, new Integer[] {55, 2, 3, 1, 1, 7}},
+//                        {new Integer[] {1, 2, 5}, null}
+                });
+
     }
 
     @Before
@@ -35,21 +42,17 @@ public class Task6Test {
 
     @Test
     public void getArrayByCriteria1() throws Exception {
-        int[] array = {1,2,4,4,2,3,4,1,7};
-        Integer[] newArray = task6.getArrayByCriteria(array);
-        Integer[] expected = {1,7};
-        Integer integer = new Integer(new int[]{1, 3});
-        Assert.assertArrayEquals(expected, newArray);
+        Assert.assertArrayEquals(expected, task6.getArrayByCriteria(actual));
     }
 
-    @Test
+    @Test(expected = RuntimeException.class)
     public void getArrayByCriteria2() throws Exception {
-
+        Assert.assertArrayEquals(null, task6.getArrayByCriteria(new Integer[] {1, 2, 5}));
     }
 
-    @Test
-    public void getArrayByCriteria3() throws Exception {
-
-    }
+//    @Test
+//    public void getArrayByCriteria3() throws Exception {
+//
+//    }
 
 }

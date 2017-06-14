@@ -6,7 +6,7 @@ import java.util.List;
  */
 public class Task6 {
 
-    public Integer[] getArrayByCriteria(int[] array) {
+    public Integer[] getArrayByCriteria(Integer[] array) {
         int len = array.length;
         boolean found = false;
         List<Integer> list = new ArrayList<>();
@@ -22,8 +22,7 @@ public class Task6 {
         }
 
         if (!found) throw new RuntimeException();
-        Integer[] n = list.toArray(new Integer[list.size()]);
-        return n;
+        return list.toArray(new Integer[list.size()]);
 
     }
 }
