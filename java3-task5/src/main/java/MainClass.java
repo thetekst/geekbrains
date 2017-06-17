@@ -10,6 +10,9 @@
 // Можете корректировать классы(в т.ч. конструктор машин)
 // и добавлять объекты классов из пакета util.concurrent
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainClass {
     public static final int CARS_COUNT = 4;
 
@@ -22,10 +25,25 @@ public class MainClass {
             cars[i] = new Car(race, 20 + (int) (Math.random() * 10));
         }
 
+        List<Thread> tt = new ArrayList<>();
+
         for (int i = 0; i < cars.length; i++) {
-            new Thread(cars[i]).start();
+            tt.add(new Thread(cars[i]));
         }
+
+        for (Thread t : tt) {
+            t.start();
+        }
+
         System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Гонка началась!!!");
+
+        for (Thread t : tt) {
+            try {
+                t.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Гонка закончилась!!!");
     }
 }
