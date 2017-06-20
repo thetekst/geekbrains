@@ -2,6 +2,7 @@ package ru;
 
 import ru.annotation.BeforeSuite;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -26,18 +27,24 @@ public class TestInvoker {
 
     private static void inspector(Class currentClass) {
         System.out.println(currentClass.getSimpleName());
-        Method[] methods = currentClass.getDeclaredMethods();
-        System.out.println(methods.length);
+        currentClass = TestClass.class;
+        Annotation[] annotations = currentClass.getDeclaredAnnotations();
+        System.out.println(annotations.length);
 
-        for (Method method : methods) {
-            System.out.println(method.getName());
-            if (method.getAnnotation(BeforeSuite.class) != null) {
-                try {
-                    method.invoke(currentClass);
-                } catch (IllegalAccessException | InvocationTargetException e) {
-                    e.printStackTrace();
-                }
+        for (Annotation annotation : annotations) {
+            System.out.println(annotation.toString());
+            if (annotation instanceof BeforeSuite) {
+                BeforeSuite beforeSuite = (BeforeSuite) annotation;
+                System.out.println("value: ");
+                System.out.println(beforeSuite);
             }
+//            if (annotation.getAnnotation(BeforeSuite.class) != null) {
+//                try {
+//                    method.invoke(currentClass);
+//                } catch (IllegalAccessException | InvocationTargetException e) {
+//                    e.printStackTrace();
+//                }
+//            }
         }
     }
 }
