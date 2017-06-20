@@ -28,6 +28,7 @@
         <module>java3-task4</module>
         <module>java3-task5</module>
         <module>java3-task6</module>
+        <module>java3-task7</module>
     </modules>
 
     <dependencies>
