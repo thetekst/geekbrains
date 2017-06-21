@@ -1,5 +1,10 @@
 package ru;
 
+import ru.annotation.BeforeSuite;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+
 /**
  * Created by thetekst on 19.06.17.
  */

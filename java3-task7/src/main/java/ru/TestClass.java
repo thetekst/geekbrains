@@ -14,12 +14,12 @@ public class TestClass {
         System.out.println("before");
     }
 
-    @Test
+    @Test(priority = 5)
     public void test1() {
         System.out.println("test 1");
     }
 
-    @Test
+    @Test(priority = 8)
     public void test2() {
         System.out.println("test 2");
     }
