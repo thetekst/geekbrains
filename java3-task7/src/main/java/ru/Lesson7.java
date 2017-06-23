@@ -12,5 +12,6 @@ public class Lesson7 {
 
     public static void main(String[] args) {
         TestInvoker.start(TestClass.class);
+//        TestInvoker.start("ru.TestClass");
     }
 }

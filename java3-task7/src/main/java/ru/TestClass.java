@@ -9,23 +9,43 @@ import ru.annotation.Test;
  */
 public class TestClass {
 
+    @AfterSuite
+    public void end() {
+        System.out.println("end");
+    }
+
     @BeforeSuite
     public void init() {
         System.out.println("before");
     }
 
-    @Test(priority = 5)
+    @Test
     public void test1() {
-        System.out.println("test 1");
+        System.out.println("p5");
+    }
+
+    @Test(priority = 10)
+    public void test6() {
+        System.out.println("p10");
+    }
+
+    @Test(priority = 1)
+    public void test4() {
+        System.out.println("p1");
     }
 
     @Test(priority = 8)
     public void test2() {
-        System.out.println("test 2");
+        System.out.println("p8");
     }
 
-    @AfterSuite
-    public void end() {
-        System.out.println("end");
+    @Test(priority = 1)
+    public void test3() {
+        System.out.println("p1");
+    }
+
+    @Test(priority = 10)
+    public void test5() {
+        System.out.println("p10");
     }
 }
