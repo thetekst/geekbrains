@@ -1,8 +1,8 @@
 package ru;
 
-import ru.annotation.AfterSuite;
-import ru.annotation.BeforeSuite;
-import ru.annotation.Test;
+import ru.test.annotation.AfterSuite;
+import ru.test.annotation.BeforeSuite;
+import ru.test.annotation.Test;
 
 /**
  * Created by thetekst on 21.06.17.

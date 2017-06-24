@@ -1,4 +1,4 @@
-package ru.exception;
+package ru.test.exception;
 
 /**
  * Created by thetekst on 22.06.17.

@@ -1,9 +1,6 @@
 package ru;
 
-import ru.annotation.BeforeSuite;
-
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
+import ru.test.service.TestInvoker;
 
 /**
  * Created by thetekst on 19.06.17.
